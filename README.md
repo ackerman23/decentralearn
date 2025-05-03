@@ -1,98 +1,138 @@
-# VeryFL: A Federated Learning Framework Embedded with Blockchain
-<div align="center">
+# VeryFL: Federated Learning with Blockchain Integration
 
-![VeryFL](./img_src/VeryFL1126.png)
-![OS](https://img.shields.io/badge/OS-Linux-orange)
-[![python](https://img.shields.io/badge/-Python_3.7_%7C_3.8_%7C_3.9-blue?logo=python&logoColor=white)](https://github.com/pre-commit/pre-commit)
-![Solidity](https://img.shields.io/badge/Solidity_0.8.21-%23363636.svg?logo=solidity&logoColor=white)
-![PyTorch](https://img.shields.io/badge/PyTorch_1.13-%23EE4C2C.svg?logo=PyTorch&logoColor=white)
+VeryFL is a federated learning framework that integrates with blockchain technology to provide secure and transparent model updates. The framework uses smart contracts to manage client registration, model updates, and model ownership verification.
 
-</div>
+## Features
 
-## Introduction
-VeryFL is a simple federated learning framework embedded with blockchain (Etherenum). Federated Learning side uses PyTorch while blockchain-side use Solidity deployed on Ethereum to implement on-chain mechanism.
-The main propose of VeryFL is to provide the blockchain-based FL algorithm with a real execution environment. However you can use VeryFL for:
- 
- - Understanding basic workflow of the federated learning.
- - Verifying centralized federated learning algorithm.  
- - Verifying blockchain-based federated learning algorithm running on real Ethereum environment.
+- Federated learning with blockchain-based model update verification
+- Smart contract-based client registration and management
+- Model registry for tracking model ownership and metadata
+- Secure model state dict serialization and deserialization
+- Integration with local Ethereum node (e.g., Ganache)
 
-## Dependence
+## Installation
 
-Ethereum Environment 
-- [Nodejs](https://nodejs.org/en)
-
-Node.js >= 16.0.0 and npm >= 7.10.0
-- Ganache
-```
-npm install ganache --global
-```
-Python Environment
-- Anaconda 
-
-1. Python: 3.6 ~ 3.9
-
-2. PyTorch: 1.13
-- Brownie
-```
-pip install eth-brownie
-```
-## Basic Function 
-### Execute federated learning experiment.
-VeryFL can simulate the federated learning experiment with both centralized/de-centralized paradigm. VeryFL contains many image classification datasets and classic federated learning algorithms.
-
-### On-chain Mechanism implemented with Solidity.
-One of the main propose of VeryFL is to provide experiment environment for blockchain-based federated learning. With the embedded Ethereum network, on-chain mechanism can be implemented in Solidity and can be deployed in VeryFL.
-
-### Model copyright protection and transaction .
-By inject watermark into model through model watermarking technology, VeryFL implement a demo framework which can protect model copyright and execute model transaction by managing watermark on the blockchain.(Detail of this function can refer to our article below [2])
-
-## Code Structure and Usage
-
-### Quick Start
-```
-python test.py --benchmark FashionMNIST
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/veryfl.git
+cd veryfl
 ```
 
-```
-#test.py
-import argparse
-from task import Task
-import config.benchmark
-
-if __name__=="__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--benchmark', type=str, default="FashionMNIST", help="Running Benchmark(See ./config/benchmark.py)")
-    args = parser.parse_args()
-    benchmark = config.benchmark.get_benchmark(args.benchmark)
-    global_args, train_args, algorithm = benchmark.get_args()
-    classification_task = Task(global_args=global_args, train_args=train_args, algorithm=algorithm)
-    classification_task.run()
-
+2. Install dependencies:
+```bash
+pip install -r requirements.txt
 ```
 
+3. Start a local Ethereum node (e.g., Ganache) on port 8545.
 
-### Customize Task Parameter
-In ./config/benchmark.py, each Benchmark contains three parts
-1. global_args: global FL parameters like client number, dataset, model.
-2. train_args: training parameters like learning rate, weight decay.
-3. Algorithm: federated learning algorithm (Aggregator, Client, Trainer)
+## Usage
 
-### Add New FL Algorithm
-1. Client side algoritm need to implement Trainer (./client/trainer) 
-2. Server side algorithm need to implement aggregator (./server/aggregation_alg)
+### Blockchain Integration
 
-### Add New On-chain Mechanism
-1. Implement algorim with Solidity (./chainEnv/contracts)
-2. Deploy smart contract when network start (./chainfl/interact)
-3. Wrap the function call with Brownie SDK in class chainProxy (./chainfl/interact)
-4. Interact with blockchain when training through chainProxy.
+1. Initialize the Web3 connection:
+```python
+from web3 import Web3
+from chainfl import chain_proxy
 
-## Relative Article
-[1] [VeryFL Design] [VeryFL: A Verify Federated Learning Framework Embedded with Blockchain](http://106.52.19.28/resource/VeryFL.pdf)(Arxiv)
+# Connect to local Ethereum node
+w3 = Web3(Web3.HTTPProvider('http://127.0.0.1:8545'))
+if not w3.is_connected():
+    raise Exception("Failed to connect to Ethereum node")
+```
 
-[2] [Model Copyright] [Tokenized Model: A Blockchain-Empowered Decentralized Model Ownership Verification Platform](http://106.52.19.28/resource/Tokenized.pdf)(Arxiv)
+2. Register a new client:
+```python
+client_id = chain_proxy.client_regist()
+print(f"Registered client with ID: {client_id}")
+```
 
-[3] [Overall Background] [Towards Reliable Utilization of AIGC: Blockchain-Empowered Ownership Verification Mechanism](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=10254223)(OJCS 2023)
+3. Upload model parameters:
+```python
+model_params = {
+    'state_dict': model.state_dict(),
+    'epoch': current_epoch,
+    'accuracy': validation_accuracy
+}
+chain_proxy.upload_model(model_params)
+```
 
-[4] [Using VeryFL] [A decentralized federated learning framework via committee mechanism with convergence guarantee](https://arxiv.org/pdf/2108.00365.pdf)(TPDS 2022)
+4. Download model parameters:
+```python
+downloaded_params = chain_proxy.download_model()
+model.load_state_dict(downloaded_params['state_dict'])
+```
+
+### Smart Contracts
+
+1. Deploy the FLContract:
+```python
+from chainfl.contracts import FLContract
+
+# Deploy contract
+contract = w3.eth.contract(abi=fl_contract_abi, bytecode=fl_contract_bytecode)
+tx_hash = contract.constructor().transact()
+tx_receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
+fl_contract = FLContract(w3, tx_receipt.contractAddress)
+```
+
+2. Register a client:
+```python
+client_address = w3.eth.accounts[1]
+success = fl_contract.register_client(client_address)
+if success:
+    print(f"Successfully registered client: {client_address}")
+```
+
+3. Submit a model update:
+```python
+model_hash = "QmHash123..."  # IPFS hash or other identifier
+success = fl_contract.submit_model(client_address, model_hash)
+if success:
+    print("Successfully submitted model update")
+```
+
+4. Verify model ownership:
+```python
+is_valid = fl_contract.verify_model(client_address, model_hash)
+print(f"Model verification result: {is_valid}")
+```
+
+### Model Registry
+
+1. Deploy the ModelRegistry contract:
+```python
+from chainfl.contracts import ModelRegistry
+
+# Deploy contract
+contract = w3.eth.contract(abi=registry_abi, bytecode=registry_bytecode)
+tx_hash = contract.constructor().transact()
+tx_receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
+registry = ModelRegistry(w3, tx_receipt.contractAddress)
+```
+
+2. Register a model:
+```python
+model_metadata = {
+    'name': 'MyModel',
+    'description': 'A federated learning model',
+    'version': '1.0.0',
+    'tags': ['federated', 'classification']
+}
+success = registry.register_model('model123', model_metadata)
+if success:
+    print("Successfully registered model")
+```
+
+3. Get model metadata:
+```python
+metadata = registry.get_model_metadata('model123')
+print(f"Model metadata: {metadata}")
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
