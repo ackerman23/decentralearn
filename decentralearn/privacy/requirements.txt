@@ -1,0 +1,28 @@
+# Core dependencies
+torch>=2.0.0
+numpy>=1.21.0
+scipy>=1.7.0
+
+# Differential Privacy
+opacus>=1.1.0  # Facebook's DP library for PyTorch
+
+# Homomorphic Encryption
+phe>=1.5.0  # Python Homomorphic Encryption library
+
+# Zero-Knowledge Proofs
+# Note: Placeholder libraries, replace with actual ZKP libraries in production
+# zk-snark-lib>=1.0.0
+# zk-stark-lib>=1.0.0
+# bulletproofs>=1.0.0
+
+# Testing
+pytest>=7.0.0
+pytest-cov>=4.0.0
+
+# Type checking
+mypy>=1.0.0
+types-PyYAML>=6.0.0
+
+# Documentation
+sphinx>=4.5.0
+sphinx-rtd-theme>=1.0.0 

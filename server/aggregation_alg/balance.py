@@ -1,77 +1,94 @@
-from ..base.baseAggregator import ServerAggregator
+"""
+Balance Aggregation Strategy
+A dynamic aggregation strategy that filters models based on their distance from the global model.
+It's like having a bouncer at the door checking IDs!
+"""
+from typing import List, Dict, Optional
 import numpy as np
+import torch
+from .aggFac import AggregationStrategy
 
-class balanceAggregator(ServerAggregator):
-    def __init__(self, gamma, kappa, init_model):
-        super().__init__()
+class Balance(AggregationStrategy):
+    """The quality control expert of federated learning
+    
+    Balance aggregation filters out models that are too far from the global model,
+    using a dynamic threshold that adapts over time. It's particularly useful when
+    you want to maintain model quality while allowing for some variation.
+    """
+    
+    def __init__(self, gamma: float = 1.0, kappa: float = 1.0):
+        """Initialize Balance with distance threshold parameters
+        
+        Args:
+            gamma: Base threshold multiplier for model distance
+            kappa: Decay rate for the threshold over time
+        """
         self.gamma = gamma
         self.kappa = kappa
-        self.saved_model = init_model
+        self.saved_model = None
+    
+    def aggregate(self, models: List[Dict[str, torch.Tensor]], 
+                 weights: Optional[List[float]] = None,
+                 t: Optional[int] = None) -> Dict[str, torch.Tensor]:
+        """Aggregate models using distance-based filtering
         
-    def _on_before_aggregation(self):
-        pass
+        Args:
+            models: List of model state dictionaries to aggregate
+            weights: Optional list of weights for each model
+            t: Current round number for dynamic threshold adjustment
+            
+        Returns:
+            The filtered and averaged model state dictionary
+            
+        Raises:
+            ValueError: If no models are provided or if saved_model is not set
+        """
+        if not models:
+            raise ValueError("No models to aggregate - the party's empty!")
         
-    def _on_after_aggregation(self):
-        pass
+        if self.saved_model is None:
+            raise ValueError("Saved model not set - please set it before aggregation")
         
-    def test(self):
-        pass
+        # Calculate global model norm
+        global_norm = np.linalg.norm(np.array(list(self.saved_model.values())))
         
-
-    def _aggregate_alg(self, raw_client_model_or_grad_list=None, t=None):
-        if raw_client_model_or_grad_list is None:
-            raw_client_model_or_grad_list = self.model_pool
-
-        # 假设 w_global 是当前的全局模型参数
-        w_global = self.saved_model  # 需要确保 self.global_model 已定义
-
-        # 计算 w_global 的范数
-        w_global_norm = np.linalg.norm(w_global)
-
-        # 定义 lambda 函数，假设 lambda(t) = 1 / (1 + t)
+        # Calculate dynamic threshold
         lambda_t = 1 / (1 + t) if t is not None else 1
-
-        # 计算距离阈值
-        gamma = self.gamma  # 需要确保 gamma 已定义
-        kappa = self.kappa  # 需要确保 kappa 已定义
-        distance_threshold = gamma * np.exp(-kappa * lambda_t) * w_global_norm
-
-        # 筛选符合条件的客户端模型参数
+        distance_threshold = self.gamma * np.exp(-self.kappa * lambda_t) * global_norm
+        
+        # Filter models based on distance
         filtered_models = []
-        for model in raw_client_model_or_grad_list:
-            # 计算模型参数与 w_global 的距离
-            distance = np.linalg.norm(np.array(model) - np.array(w_global))
+        for model in models:
+            # Calculate distance from global model
+            distance = np.linalg.norm(np.array(list(model.values())) - 
+                                    np.array(list(self.saved_model.values())))
+            
             if distance < distance_threshold:
                 filtered_models.append(model)
             else:
-                print(f"Model rejected: distance {distance} >= threshold {distance_threshold}")
-
+                print(f"Model rejected: distance {distance:.4f} >= threshold {distance_threshold:.4f}")
+        
+        # If no models passed the filter, return the saved model
         if not filtered_models:
-            print("No models were accepted for aggregation.")
-            return w_global  # 如果没有模型被接受，则返回全局模型
-
-        # 对筛选后的模型参数进行平均聚合
-        if isinstance(filtered_models[0], dict):
-            keys = filtered_models[0].keys()
-            aggregated_model = {}
-
-            for key in keys:
-                values = [model[key] for model in filtered_models]
-                aggregated_model[key] = np.mean(values, axis=0)
-                # 如果值是向量或矩阵，np.mean 会自动对指定轴进行平均
-
-            return aggregated_model
-
-        elif isinstance(filtered_models[0], list):
-            # 将列表转换为 NumPy 数组以利用向量化运算
-            grads = np.array(filtered_models)
-            mean_grad = np.mean(grads, axis=0)
-            return mean_grad.tolist()
-
-        else:
-            # 处理其他数据类型的情况（例如，单一数值）
-            try:
-                aggregated_value = np.mean(filtered_models)
-                return aggregated_value
-            except:
-                raise ValueError("Unsupported data type for aggregation")
+            print("No models were accepted for aggregation. Using saved model.")
+            return self.saved_model
+        
+        # Average the filtered models
+        aggregated_model = {}
+        for key in filtered_models[0].keys():
+            values = [model[key] for model in filtered_models]
+            aggregated_model[key] = np.mean(values, axis=0)
+            
+            # Convert back to torch tensor if needed
+            if isinstance(values[0], torch.Tensor):
+                aggregated_model[key] = torch.from_numpy(aggregated_model[key])
+        
+        return aggregated_model
+    
+    def set_saved_model(self, model: Dict[str, torch.Tensor]) -> None:
+        """Set the saved model for distance comparison
+        
+        Args:
+            model: The model state dictionary to save
+        """
+        self.saved_model = model

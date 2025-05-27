@@ -1,0 +1,4 @@
+client
+decentralearn
+model
+server

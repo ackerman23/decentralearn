@@ -1,7 +1,7 @@
 from abc import abstractmethod
 import logging
 from util import jsonFormat
-from chainfl.interact import chainProxy
+from decentralearn.interact import chainProxy
 
 import torch.optim
 #from server.serverSimulator import serverSimulator

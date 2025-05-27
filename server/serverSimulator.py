@@ -7,7 +7,7 @@ from typing import OrderedDict
 
 class serverSimulator:
     # A local serverSimulator to simulate the blockchain
-    # This serverSimulator act as the same with the serverProxy in chainfl.
+    # This serverSimulator act as the same with the serverProxy in decentralearn.
     
     def __init__(
         self,

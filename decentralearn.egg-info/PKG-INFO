@@ -1,0 +1,44 @@
+Metadata-Version: 2.1
+Name: decentralearn
+Version: 0.1.0
+Summary: A decentralized federated learning framework with privacy guarantees
+Home-page: https://github.com/decentralearn/decentralearn
+Author: DecentraLearn Team
+Author-email: team@decentralearn.ai
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Provides-Extra: test
+Provides-Extra: dev
+Provides-Extra: docs
+
+# DecentraLearn
+
+A decentralized federated learning framework with strong privacy guarantees.
+
+## Features
+
+- Federated Learning with blockchain integration
+- Advanced privacy mechanisms:
+  - Differential Privacy
+  - Homomorphic Encryption
+  - Zero-Knowledge Proofs
+- Smart contract-based model verification
+- Incentive mechanisms for participation
+
+## Installation
+
+```bash
+pip install -e .
+```
+
+## Documentation
+
+See the `docs/` directory for detailed documentation.

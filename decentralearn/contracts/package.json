@@ -1,0 +1,15 @@
+{
+  "name": "decentralearn-contracts",
+  "version": "1.0.0",
+  "description": "Smart contracts for DecentraLearn",
+  "scripts": {
+    "compile": "node compile.js",
+    "test": "python -m pytest ../tests/contracts/"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.9.0"
+  },
+  "devDependencies": {
+    "solc": "^0.8.20"
+  }
+} 

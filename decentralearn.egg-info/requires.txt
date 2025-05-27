@@ -1,0 +1,17 @@
+torch>=2.0.0
+numpy>=1.21.0
+scipy>=1.7.0
+opacus>=1.1.0
+phe>=1.5.0
+
+[dev]
+mypy>=1.0.0
+types-PyYAML>=6.0.0
+
+[docs]
+sphinx>=4.5.0
+sphinx-rtd-theme>=1.0.0
+
+[test]
+pytest>=7.0.0
+pytest-cov>=4.0.0
