@@ -149,7 +149,7 @@ If you use DecentraLearn in your research, please cite:
   author = {Jihad GARTI},
   title = {DecentraLearn: A Decentralized Federated Learning Framework},
   year = {2024},
-  publisher = {GitHub},
-  url = {https://github.com/yourusername/decentralearn}
+  publisher = {ackerman23},
+  url = {https://github.com/ackerman23/decentralearn}
 }
 ```
