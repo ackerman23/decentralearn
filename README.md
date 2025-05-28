@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="Logo.jpg" alt="DecentraLearn Logo" width="200"/>
+  <img src="https://i.imgur.com/O9KVjoN.jpg" alt="DecentraLearn Logo" width="200"/>
 </p>
 
 # DecentraLearn
