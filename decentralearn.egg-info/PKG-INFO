@@ -1,6 +1,6 @@
-Metadata-Version: 2.4
+Metadata-Version: 2.1
 Name: decentralearn
-Version: 2.1.0
+Version: 2.1.2
 Summary: A decentralized federated learning framework with privacy guarantees, created by Jihad GARTI
 Home-page: https://github.com/decentralearn/decentralearn
 Author: Jihad GARTI
@@ -15,38 +15,13 @@ Classifier: Programming Language :: Python :: 3.10
 Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
 Requires-Python: >=3.8
 Description-Content-Type: text/markdown
-License-File: LICENSE.md
-Requires-Dist: torch>=2.0.0
-Requires-Dist: numpy>=1.21.0
-Requires-Dist: scipy>=1.7.0
-Requires-Dist: opacus>=1.1.0
-Requires-Dist: phe>=1.5.0
-Requires-Dist: web3>=6.0.0
-Requires-Dist: eth-tester>=0.9.0
-Requires-Dist: eth-utils>=2.1.0
 Provides-Extra: test
-Requires-Dist: pytest>=7.0.0; extra == "test"
-Requires-Dist: pytest-cov>=4.0.0; extra == "test"
 Provides-Extra: dev
-Requires-Dist: mypy>=1.0.0; extra == "dev"
-Requires-Dist: types-PyYAML>=6.0.0; extra == "dev"
 Provides-Extra: docs
-Requires-Dist: sphinx>=4.5.0; extra == "docs"
-Requires-Dist: sphinx-rtd-theme>=1.0.0; extra == "docs"
-Dynamic: author
-Dynamic: author-email
-Dynamic: classifier
-Dynamic: description
-Dynamic: description-content-type
-Dynamic: home-page
-Dynamic: license-file
-Dynamic: provides-extra
-Dynamic: requires-dist
-Dynamic: requires-python
-Dynamic: summary
+License-File: LICENSE.md
 
 <div align="center">
-  <img src="Logo.png" alt="DecentraLearn Logo" width="200"/>
+  <img src="https://raw.githubusercontent.com/ackerman23/decentralearn/main/Logo.jpg" alt="DecentraLearn Logo" width="200"/>
 </div>
 
 # DecentraLearn

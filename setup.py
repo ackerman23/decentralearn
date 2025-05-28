@@ -2,8 +2,12 @@ from setuptools import setup, find_packages
 
 setup(
     name="decentralearn",
-    version="2.1.0",
+    version="2.1.2",
     packages=find_packages(),
+    package_data={
+        "decentralearn": ["Logo.jpg"],
+    },
+    include_package_data=True,
     install_requires=[
         "torch>=2.0.0",
         "numpy>=1.21.0",
