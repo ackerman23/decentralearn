@@ -1,4 +1,6 @@
+LICENSE.md
 README.md
+pyproject.toml
 setup.py
 client/__init__.py
 client/clients.py
@@ -13,6 +15,7 @@ decentralearn.egg-info/requires.txt
 decentralearn.egg-info/top_level.txt
 decentralearn/contracts/__init__.py
 decentralearn/contracts/contracts.py
+decentralearn/contracts/deploy.py
 decentralearn/contracts/fl_contract.py
 decentralearn/contracts/model_registry.py
 decentralearn/dataset/CIFAR10.py

@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="decentralearn",
-    version="0.1.0",
+    version="2.1.0",
     packages=find_packages(),
     install_requires=[
         "torch>=2.0.0",
@@ -29,9 +29,9 @@ setup(
         ],
     },
     python_requires=">=3.8",
-    author="DecentraLearn Team",
-    author_email="team@decentralearn.ai",
-    description="A decentralized federated learning framework with privacy guarantees",
+    author="Jihad GARTI",
+    author_email="jihad.garti2@gmail.com",
+    description="A decentralized federated learning framework with privacy guarantees, created by Jihad GARTI",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     url="https://github.com/decentralearn/decentralearn",

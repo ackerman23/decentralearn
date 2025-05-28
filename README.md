@@ -1,9 +1,13 @@
+<div align="center">
+  <img src="Logo.png" alt="DecentraLearn Logo" width="200"/>
+</div>
+
 # DecentraLearn
 
 [![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Documentation](https://img.shields.io/badge/docs-latest-brightgreen)](docs/index.md)
-[![Tests](https://github.com/yourusername/decentralearn/actions/workflows/tests.yml/badge.svg)](https://github.com/yourusername/decentralearn/actions/workflows/tests.yml)
+[![Tests](https://github.com/ackerman23/decentralearn/actions/workflows/tests.yml/badge.svg)](https://github.com/ackerman23/decentralearn/actions/workflows/tests.yml)
 
 A decentralized federated learning framework with strong privacy guarantees, built on blockchain technology.
 
@@ -35,17 +39,47 @@ A decentralized federated learning framework with strong privacy guarantees, bui
 
 ## 📦 Installation
 
+### Install via pip (Recommended)
+
+You can install the latest release (v2.1.0) directly from PyPI:
+
+```bash
+pip install decentralearn
+```
+
+To upgrade to the latest version:
+
+```bash
+pip install --upgrade decentralearn
+```
+
+**Note:** If you encounter dependency issues (especially with `eth-tester`), try installing the beta version first:
+
+```bash
+pip install eth-tester==0.13.0b1
+pip install decentralearn
+```
+
+Or install all dependencies manually:
+
+```bash
+pip install torch>=2.0.0 numpy>=1.21.0 scipy>=1.7.0 opacus>=1.1.0 phe>=1.5.0 web3>=6.0.0 eth-tester==0.13.0b1 eth-utils>=2.1.0
+pip install decentralearn
+```
+
+---
+
 ### Prerequisites
 
 - Python 3.8 or higher
 - Ethereum node (e.g., Ganache for development)
 - PyTorch 1.7 or higher
 
-### Installation Steps
+### Installation Steps (from source)
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/decentralearn.git
+   git clone https://github.com/ackerman23/decentralearn
    cd decentralearn
    ```
 
@@ -126,6 +160,8 @@ We welcome contributions! Please see our [Contributing Guide](docs/development/c
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+**Creator:** Jihad GARTI (<jihad.garti2@gmail.com>)
+
 ## 📧 Support
 
 For questions and support:
@@ -149,7 +185,7 @@ If you use DecentraLearn in your research, please cite:
   author = {Jihad GARTI},
   title = {DecentraLearn: A Decentralized Federated Learning Framework},
   year = {2024},
-  publisher = {ackerman23},
+  publisher = {Jihad GARTI},
   url = {https://github.com/ackerman23/decentralearn}
 }
 ```
