@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/ackerman23/decentralearn/main/Logo.jpg" alt="DecentraLearn Logo" width="200"/>
+  <img src="Logo.jpg" alt="DecentraLearn Logo" width="200"/>
 </p>
 
 # DecentraLearn
