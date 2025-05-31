@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="decentralearn",
-    version="2.1.3",
+    version="2.1.4",
     packages=find_packages(),
     package_data={
         "decentralearn": ["Logo.jpg"],
